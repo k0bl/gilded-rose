@@ -1,0 +1,6 @@
+controllers:
+    resource: ../../src/Controller/
+    type: annotation
+
+    #need to add api/v1 prefix to all URLS for future proofing
+    prefix: /api/v1
