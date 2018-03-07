@@ -53,4 +53,24 @@ class RoomRepository extends EntityRepository
         } catch (NoResultException $e) {
         }
     }
+    public function findMostProfitableRoom($luggage = 0, $checkIn)
+    {
+        $qb = $this->getAvailableRoomsQueryBuilder($checkIn);
+        $qb->addSelect('(r.maxOccupants - count(b))
+                as availableOccupants')
+            ->addSelect('(r.totalStorage - sum(b.luggageItems))
+                as availableStorage')
+            ->andHaving('(r.totalStorage - sum(b.luggageItems)) >= :luggage OR :luggage = 0 OR (count(b) = 0 AND :luggage <= r.totalStorage)')
+            ->orderBy('availableOccupants', 'desc')
+            ->orderBy('availableStorage', 'desc')
+            ->setMaxResults(1)
+            ->setParameter('luggage', $luggage);
+        try {
+            $result = $qb->getQuery()->getSingleResult();
+            if ($result) {
+                return $result[0];
+            }
+        } catch (NoResultException $e) {
+        }
+    }
 }
