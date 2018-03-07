@@ -12,19 +12,19 @@ class Booking
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
-	*/
+	 */
 	public $id;
 
-	 /**
-     * @ORM\OneToMany(targetEntity="Room", inversedBy="bookings")
-     * @ORM\JoinColumn(name="room_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    public $rooms;
+	/**
+	 * @ORM\ManyToOne(targetEntity="Room", inversedBy="bookings")
+	 * @ORM\JoinColumn(name="room_id", referencedColumnName="id")
+	 */
+    public $room;
 
 	/**
 	 * @ORM\Column(type="integer")
 	 */
-	public $guests;
+	public $luggageItems;
 
 	/**
      * @ORM\Column(type="datetime")
