@@ -39,15 +39,11 @@ class BookingController extends Controller
      */
     public function postBookingAction(Request $request)
     {
-        /* checkInDate and checkOutDate will be set manually to 4 pm
-        for check in and 8am for check out. We can expand this in the
-        future to allow us to accept a checkInDate and checkOutDate
-        from the request for future reservations.
-        */
+        /* checkInDate and checkOutDate will be set manually to the
+        current time for check in and 8am the next day for check out. */
         $checkInDate = new DateTime();
-        $checkInDate->setTime(16, 00, 00);
         $checkOutDate = clone $checkInDate;
-        $checkOutDate->add(new DateInterval("P1D")); //add one day
+        $checkOutDate->add(new DateInterval("P1D")); //increment by one day
         $checkOutDate->setTime(8, 00, 00);
 
         //get next available room
@@ -56,8 +52,7 @@ class BookingController extends Controller
 
         //if we cannot find a room, we throw a 400 error
         if (!$room) {
-            throw new HttpException(400, "Cannot complete booking.
-                An error occurred");
+            throw new HttpException(400, "Cannot complete booking. An error occurred");
         }
         //create new booking
         $booking = new Booking();
@@ -83,34 +78,48 @@ class BookingController extends Controller
 
         //get doctrine entity manager
         $em = $this->getDoctrine()->getManager();
+
         //persist booking and cleaning, flush to database
         $em->persist($booking);
         $em->persist($cleaning);
         $em->flush();
 
-        return View::create($room->roomNumber, Response::HTTP_CREATED , []);
+        return View::create($booking, Response::HTTP_CREATED , []);
 
     }
 
     /* check for incomplete cleaning, or return a new one */
     protected function getCleaning($room, $cleaningCrew)
     {
-
+        $cleaningRepo = $this->getDoctrine()->getRepository(Cleaning::class);
+        $incompleteCleaning = $cleaningRepo->findIncompleteCleaning($room->id);
+        if ($incompleteCleaning) {
+            return $incompleteCleaning;
+        } else {
+            $cleaning = new Cleaning();
+            $cleaning->room = $room;
+            $cleaning->crew = $cleaningCrew;
+            $cleaning->duration = $cleaningCrew->baseCleanTime;
+            return $cleaning;
+        }
     }
 
     /* returns most profitable room for guest to stay in */
     protected function checkRoomAvailability($luggage, $checkIn)
     {
-
         $roomRepo = $this->getDoctrine()->getRepository(Room::class);
         $room = $roomRepo->findMostProfitableRoom($luggage, $checkIn);
         return $room;
     }
+
     /* get the cleaning crews and pop the first one off. We can extend this
     to support multiple cleaning crews in the future */
     protected function getCleaningCrew()
     {
-
+        $cleaningCrews = $this->getDoctrine()->getRepository(CleaningCrew::class)
+        ->findAll();
+        if ($cleaningCrews) {
+            return array_pop($cleaningCrews);
+        }
     }
-
 }
