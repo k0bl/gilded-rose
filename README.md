@@ -1,5 +1,5 @@
-##Gilded Rose Inn Booking System
-###Setup and Configuration
+## Gilded Rose Inn Booking System
+### Setup and Configuration
 
 Core Requirements
 - PHP7
@@ -14,7 +14,7 @@ Copy .env.dist in the root of the project to a new file named .env
 
 Fill out your HTTP
 
-###Functionality
-###Extendability
-###Resources
-###Tools
+### Functionality
+### Extendability
+### Resources
+### Tools
