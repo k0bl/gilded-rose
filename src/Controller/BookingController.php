@@ -102,6 +102,9 @@ class BookingController extends Controller
     protected function checkRoomAvailability($luggage, $checkIn)
     {
 
+        $roomRepo = $this->getDoctrine()->getRepository(Room::class);
+        $room = $roomRepo->findMostProfitableRoom($luggage, $checkIn);
+        return $room;
     }
     /* get the cleaning crews and pop the first one off. We can extend this
     to support multiple cleaning crews in the future */
