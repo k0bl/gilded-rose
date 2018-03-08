@@ -62,11 +62,11 @@ class RoomRepository extends EntityRepository
         $qb = $this->getAvailableRoomsQueryBuilder($checkIn);
         $qb->addSelect('(r.maxOccupants - count(b))
                 as availableOccupants')
-            ->addSelect('(r.totalStorage - sum(b.luggageItems))
+            ->addSelect('(r.totalStorage - coalesce(sum(b.luggageItems), 0))
                 as availableStorage')
             ->andHaving('(r.totalStorage - sum(b.luggageItems)) >= :luggage OR :luggage = 0 OR (count(b) = 0 AND :luggage <= r.totalStorage)')
-            ->orderBy('availableStorage', 'desc')
             ->orderBy('availableOccupants', 'desc')
+            ->orderBy('availableStorage')
             ->setMaxResults(1)
             ->setParameter('luggage', $luggage);
         try {
