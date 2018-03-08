@@ -23,8 +23,18 @@ class CleaningController extends Controller
     {
         $cleaningsRepo = $this->getDoctrine()->getRepository(Cleaning::class);
         $cleanings = $cleaningsRepo->findIncompleteCleanings();
+
+        $iterTime = new DateTime();
+        $iterTime->setTime(8, 00, 00);
+
+        foreach($cleanings as $cleaning) {
+            $cleaning->startTime = clone $iterTime;
+            $iterTime->add(new \DateInterval('PT'.$cleaning->duration.'M'));
+            $cleaning->endTime = clone $iterTime;
+        }
         return View::create($cleanings, Response::HTTP_OK, []);
     }
+
     /**
      * Patch cleaning by id to complete the cleaning
      * @Rest\Patch("/cleaning_schedule/{id}")

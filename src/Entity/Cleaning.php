@@ -49,4 +49,16 @@ class Cleaning
 	 * @JMS\Expose
 	 */
 	public $completed;
+
+	/**
+	 * @JMS\Expose
+	 * @JMS\Type("DateTime")
+	 */
+	public $startTime;
+
+	/**
+	 * @JMS\Expose
+	 * @JMS\Type("DateTime")
+	 */
+	public $endTime;
 }
