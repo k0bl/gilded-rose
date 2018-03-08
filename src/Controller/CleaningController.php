@@ -22,5 +22,22 @@ class CleaningController extends Controller
         $cleanings = $cleaningsRepo->findIncompleteCleanings();
 		return View::create($cleanings, Response::HTTP_OK, []);
 	}
+	/**
+	 * Patch cleaning by id to complete the cleaning
+	 * @Rest\Patch("/cleaning_schedule/{id}")
+	 * @return array
+	 */
+	public function completeCleaningAction($id)
+	{
+        $cleaningsRepo = $this->getDoctrine()->getRepository(Cleaning::class);
+        $cleaning = $cleaningsRepo->findCleaningById($id);
+        $cleaning->completed = new DateTime();
 
+        $em = $this->getDoctrine()->getManager();
+        //persist cleaning, flush to database
+        $em->persist($cleaning);
+        $em->flush();
+
+		return View::create($cleaning, Response::HTTP_OK, []);
+	}
 }

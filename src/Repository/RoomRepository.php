@@ -7,6 +7,7 @@ use Doctrine\ORM\NoResultException;
 
 class RoomRepository extends EntityRepository
 {
+    //find rooms that are available right now
     public function findAvailableRooms($checkIn)
     {
         $qb = $this->getAvailableRoomsQueryBuilder($checkIn);
@@ -58,8 +59,8 @@ class RoomRepository extends EntityRepository
             ->addSelect('(r.totalStorage - sum(b.luggageItems))
                 as availableStorage')
             ->andHaving('(r.totalStorage - sum(b.luggageItems)) >= :luggage OR :luggage = 0 OR (count(b) = 0 AND :luggage <= r.totalStorage)')
-            ->orderBy('availableOccupants', 'desc')
             ->orderBy('availableStorage', 'desc')
+            ->orderBy('availableOccupants', 'desc')
             ->setMaxResults(1)
             ->setParameter('luggage', $luggage);
         try {
