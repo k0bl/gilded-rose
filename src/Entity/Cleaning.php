@@ -22,15 +22,15 @@ class Cleaning
 	 * @ORM\ManyToOne(targetEntity="Room", inversedBy="cleanings")
 	 * @ORM\JoinColumn(name="room_id", referencedColumnName="id")
 	 */
-    public $room;
+    	public $room;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="CleaningCrew", inversedBy="cleanings")
 	 * @ORM\JoinColumn(name="crew_id", referencedColumnName="id")
 	 */
-    public $crew;
+    	public $crew;
 
-    /**
+    	/**
 	 * @ORM\Column(type="integer")
 	 * @JMS\Expose
 	 */
@@ -43,7 +43,7 @@ class Cleaning
 	public $duration;
 
 	/**
-     * @ORM\Column(type="datetime", nullable=true)
+	 * @ORM\Column(type="datetime", nullable=true)
 	 * @JMS\Expose
 	 */
 	public $completed;
@@ -60,11 +60,11 @@ class Cleaning
 	 */
 	public $endTime;
 
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("room_number")
-     */
-    public function getRoomNumber() {
-        return $this->room->roomNumber;
-    }
+	/**
+	* @JMS\VirtualProperty
+	* @JMS\SerializedName("room_number")
+	*/
+	public function getRoomNumber() {
+		return $this->room->roomNumber;
+	}
 }
