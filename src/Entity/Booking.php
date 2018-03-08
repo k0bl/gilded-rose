@@ -5,6 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="booking")
+ * @JMS\ExclusionPolicy("All")
  */
 class Booking
 {

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="room")
  * @ORM\Entity(repositoryClass="App\Repository\RoomRepository")
+ * @JMS\ExclusionPolicy("All")
  */
 class Room
 {
@@ -18,26 +19,31 @@ class Room
 
 	/**
 	 * @ORM\Column(type="integer")
+	 * @JMS\Expose
 	*/
 	public $roomNumber;
 
 	/**
 	 * @ORM\Column(type="integer")
+	 * @JMS\Expose
 	 */
 	public $maxOccupants;
 
 	/**
 	 * @ORM\Column(type="integer")
+	 * @JMS\Expose
 	 */
 	public $totalStorage;
 
 	/**
 	 * @ORM\Column(type="integer")
+	 * @JMS\Expose
 	 */
 	public $baseCost;
-    
+
 	/**
 	 * @ORM\Column(type="integer")
+	 * @JMS\Expose
 	 */
 	public $baseStorageCost;
 
