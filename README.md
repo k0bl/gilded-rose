@@ -12,7 +12,6 @@ Run
 ```
 composer install
 ```
-Copy .env.dist in the root of the project to a new file named .env
 
 In the .env file, add database connection parameters
 ```
