@@ -15,14 +15,12 @@ class Cleaning
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
-	 * @JMS\Expose
 	 */
 	public $id;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Room", inversedBy="cleanings")
 	 * @ORM\JoinColumn(name="room_id", referencedColumnName="id")
-	 * @JMS\Expose
 	 */
     public $room;
 
@@ -61,4 +59,12 @@ class Cleaning
 	 * @JMS\Type("DateTime")
 	 */
 	public $endTime;
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("room_number")
+     */
+    public function getRoomNumber() {
+        return $this->room->roomNumber;
+    }
 }

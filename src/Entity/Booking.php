@@ -10,33 +10,43 @@ use JMS\Serializer\Annotation as JMS;
  */
 class Booking
 {
-	/**
-	 * @ORM\Column(type="integer")
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	public $id;
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    public $id;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="Room", inversedBy="bookings")
-	 * @ORM\JoinColumn(name="room_id", referencedColumnName="id")
-	 */
+    /**
+     * @ORM\ManyToOne(targetEntity="Room", inversedBy="bookings")
+     * @ORM\JoinColumn(name="room_id", referencedColumnName="id")
+     */
     public $room;
 
-	/**
-	 * @ORM\Column(type="integer")
-	 */
-	public $luggageItems;
+    /**
+     * @ORM\Column(type="integer")
+     * @JMS\Expose
+     */
+    public $luggageItems;
 
-	/**
+    /**
      * @ORM\Column(type="datetime")
-	 */
-	public $checkIn;
+     * @JMS\Expose
+     */
+    public $checkIn;
 
-	/**
+    /**
      * @ORM\Column(type="datetime")
-	 */
-	public $checkOut;
+     * @JMS\Expose
+     */
+    public $checkOut;
 
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("room_number")
+     */
+    public function getRoomNumber() {
+        return $this->room->roomNumber;
+    }
 
 }
