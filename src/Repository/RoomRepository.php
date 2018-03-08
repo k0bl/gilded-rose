@@ -12,11 +12,7 @@ class RoomRepository extends EntityRepository
         $qb = $this->getAvailableRoomsQueryBuilder($checkIn);
         try {
             $results =  $qb->getQuery()->getResult();
-            $output = [];
-            foreach($results as $result) {
-                $output[] = $result[0];
-            }
-            return $output;
+            return $results;
         } catch (NoResultException $e) {
         }
     }
@@ -53,6 +49,7 @@ class RoomRepository extends EntityRepository
         } catch (NoResultException $e) {
         }
     }
+
     public function findMostProfitableRoom($luggage = 0, $checkIn)
     {
         $qb = $this->getAvailableRoomsQueryBuilder($checkIn);
