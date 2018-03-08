@@ -7,7 +7,7 @@ use Doctrine\ORM\NoResultException;
 
 class RoomRepository extends EntityRepository
 {
-    //find rooms that are available right now
+    //find all rooms that are available right now
     public function findAvailableRooms($checkIn)
     {
         $qb = $this->getAvailableRoomsQueryBuilder($checkIn);
@@ -18,6 +18,7 @@ class RoomRepository extends EntityRepository
         }
     }
 
+    //base query builder for finding rooms that are available right now
     private function getAvailableRoomsQueryBuilder($checkIn)
     {
            $qb = $this->createQueryBuilder('r');
@@ -37,6 +38,7 @@ class RoomRepository extends EntityRepository
             return $qb;
     }
 
+    //return a room by id if it is available
     public function findAvailableRoomById($id, $checkIn)
     {
         $qb = $this->getAvailableRoomsQueryBuilder($checkIn);
@@ -51,6 +53,10 @@ class RoomRepository extends EntityRepository
         }
     }
 
+    /*Find the most profitable room for the guest to stay in. If the guest has 1
+    piece of luggage, make sure we put them in a room with 1 storage space if possible. If a guest has no luggage, make sure we put them in a room with no
+    storage space. This will leave the rooms with the most storage space available
+    for a higher paying guest with 2 pieces of luggage */
     public function findMostProfitableRoom($luggage = 0, $checkIn)
     {
         $qb = $this->getAvailableRoomsQueryBuilder($checkIn);
