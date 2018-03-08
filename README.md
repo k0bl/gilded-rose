@@ -64,6 +64,7 @@ PATCH http://127.0.0.1:8000/api/v1/cleaning_schedule/{id}
 ### Functionality
 The implementation is based around a MySQL relational database. The app:fixtures:load command loads the database with the rooms containing parameters from the specification, as well as a single cleaning crew (Gnome Cleaning Squad).
 
+##### Entity Relationship Diagram
 ![alt text](https://raw.githubusercontent.com/k0bl/gilded-rose/master/extra/GildedEntities.jpg)
 
 A room is booked by sending a POST request to /api/v1/booking with a JSON object containing the number of luggage items the guest is checking in with. There is a specialized query that checks against exisitng bookings, available rooms and cleaning availability. This query returns a single available room that will render the most profit for the business. For example, it would not make sense to book a guest with no luggage in a room with storage spaces. We could make more money if we choose a less equipped room and hold the rooms with storage space for guests who have luggage.
