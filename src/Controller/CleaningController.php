@@ -8,9 +8,7 @@ use App\Entity\Room;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\VarDumper\VarDumper;
 
 class CleaningController extends Controller
 {
@@ -32,6 +30,7 @@ class CleaningController extends Controller
             $iterTime->add(new \DateInterval('PT'.$cleaning->duration.'M'));
             $cleaning->endTime = clone $iterTime;
         }
+        //View::create overrides the template system to return a JSON serialized response
         return View::create($cleanings, Response::HTTP_OK, []);
     }
 
@@ -42,17 +41,20 @@ class CleaningController extends Controller
      */
     public function completeCleaningAction(int $id)
     {
-        VarDumper::dump($id);
         $cleaningsRepo = $this->getDoctrine()->getRepository(Cleaning::class);
         $cleaning = $cleaningsRepo->find($id);
-        VarDumper::dump($cleaning);
+
         if (!$cleaning) {
-            throw new HttpException(400, "Cleaning does not exist");
+            //View::create overrides the template system to return a JSON serialized response
+            return View::create(['error'=>'Cannot complete cleaning. Cleaning does not exist.'],
+                400);
         }
         if (!$cleaning->completed) {
             $cleaning->completed = new DateTime();
         } else {
-            throw new HttpException(400, "Cannot complete cleaning, already completed.");
+            //View::create overrides the template system to return a JSON serialized response
+            return View::create(['error'=>'Cannot complete cleaning. Cleaning already completed.'],
+                400);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -60,6 +62,7 @@ class CleaningController extends Controller
         $em->persist($cleaning);
         $em->flush();
 
+        //View::create overrides the template system to return a JSON serialized response
         return View::create($cleaning, Response::HTTP_OK, []);
     }
 }

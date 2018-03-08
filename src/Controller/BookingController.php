@@ -14,22 +14,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\VarDumper\VarDumper;
 
 class BookingController extends Controller
 {
-    /**
-     * Lists Bookings
-     * @Rest\Get("/booking")
-     * @return array
-     */
-    public function getBookingAction()
-    {
-        $repo = $this->getDoctrine()->getRepository(Booking::class);
-        $avail = $repo->findall();
-        // return View::create($avail, Response::HTTP_OK, []);
-        return $avail;
-    }
 
     /**
      * Create Booking.
@@ -52,7 +39,8 @@ class BookingController extends Controller
 
         //if we cannot find a room, we throw a 400 error
         if (!$room) {
-            throw new HttpException(400, "Cannot complete booking. An error occurred");
+            //View::create overrides the template system to return a JSON serialized response
+            return View::create(['error'=>'Cannot complete booking. An error occurred'], 400);
         }
         //create new booking
         $booking = new Booking();
@@ -72,7 +60,7 @@ class BookingController extends Controller
         // increase the occupant count for the cleaning
         $cleaning->occupants = $cleaning->occupants + 1;
 
-        // update cleaning duration for room, add occupantCleanTime
+        // add occupantCleanTime to duration
         $cleaning->duration = $cleaning->duration +
             $cleaningCrew->occupantCleanTime;
 
@@ -84,6 +72,7 @@ class BookingController extends Controller
         $em->persist($cleaning);
         $em->flush();
 
+        //View::create overrides the template system to return a JSON serialized response
         return View::create($booking, Response::HTTP_CREATED , []);
 
     }
