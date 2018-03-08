@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -37,13 +38,11 @@ class Room
 
 	/**
 	 * @ORM\Column(type="integer")
-	 * @JMS\Expose
 	 */
 	public $baseCost;
 
 	/**
 	 * @ORM\Column(type="integer")
-	 * @JMS\Expose
 	 */
 	public $baseStorageCost;
 

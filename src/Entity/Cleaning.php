@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -14,6 +15,7 @@ class Cleaning
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
+	 * @JMS\Expose
 	 */
 	public $id;
 
@@ -21,7 +23,6 @@ class Cleaning
 	 * @ORM\ManyToOne(targetEntity="Room", inversedBy="cleanings")
 	 * @ORM\JoinColumn(name="room_id", referencedColumnName="id")
 	 * @JMS\Expose
-
 	 */
     public $room;
 
@@ -45,6 +46,7 @@ class Cleaning
 
 	/**
      * @ORM\Column(type="datetime", nullable=true)
+	 * @JMS\Expose
 	 */
 	public $completed;
 }
