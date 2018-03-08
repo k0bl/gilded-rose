@@ -83,6 +83,12 @@ We could also add additional cleaning crews in AppFixtures but more work would n
 There are a number of ways we can add more business logic. The entities can be extended, modified or we can add new entities for brand new features. The code that is reponsible for returning query results resides in a repository class, we can simply add more repository functions with new queries to accomodate new requirements. Controller logic (the part that is handling the request data and reponse) can be extended with additional functions (ie if we needed to rewrite the logic for determining most profitable room, that is just a function that is called by the controller that calls a function on the repository) so all of that could be extended or easily replaced if need be.
 
 ### README Questions
+* What documentation, websites, papers, etc. did you consult for this assignment?
+	- PHP Manual http://php.net/
+	- Symfony Documentation http://symfony.com/doc/current/index.html
+	- Doctrine ORM Documentation http://docs.doctrine-project.org/en/latest/
+	- W3Schools MySQL documentation https://www.w3schools.com/sql/default.asp
+	- StackOverflow https://stackoverflow.com/
 * What third party libraries or other tools does your application use? How did you choose each library or framework you used?
 	- The application uses the Symfony4 micro-skeleton. This gives us a bare bones project with the HTTP Foundation and HTTP kernel components.
 	- FriendsOfSymfony REST Bundle. Provides a view layer, and tools for building RESTful APIs in Symfony.
